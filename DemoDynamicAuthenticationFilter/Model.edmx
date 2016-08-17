@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TestAuthorizationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedBy" Type="int" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdRole" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedBy" Type="int" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TView">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdParent" Type="varchar" MaxLength="250" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="GroupName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TViewAccess">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdView" Type="int" Nullable="false" />
+          <Property Name="IdRole" Type="int" Nullable="false" />
+          <Property Name="AccessRight" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_TAccessibility_TRole">
+          <End Role="TRole" Type="Self.TRole" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TViewAccess" Type="Self.TViewAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TViewAccess">
+              <PropertyRef Name="IdRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TAccessibility_TView">
+          <End Role="TView" Type="Self.TView" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TViewAccess" Type="Self.TViewAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TView">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TViewAccess">
+              <PropertyRef Name="IdView" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TUser_TRole">
+          <End Role="TRole" Type="Self.TRole" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TUser" Type="Self.TUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TUser">
+              <PropertyRef Name="IdRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TestAuthorizationModelStoreContainer">
+          <EntitySet Name="TRole" EntityType="Self.TRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TUser" EntityType="Self.TUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TView" EntityType="Self.TView" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TViewAccess" EntityType="Self.TViewAccess" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TAccessibility_TRole" Association="Self.FK_TAccessibility_TRole">
+            <End Role="TRole" EntitySet="TRole" />
+            <End Role="TViewAccess" EntitySet="TViewAccess" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TAccessibility_TView" Association="Self.FK_TAccessibility_TView">
+            <End Role="TView" EntitySet="TView" />
+            <End Role="TViewAccess" EntitySet="TViewAccess" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TUser_TRole" Association="Self.FK_TUser_TRole">
+            <End Role="TRole" EntitySet="TRole" />
+            <End Role="TUser" EntitySet="TUser" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TestAuthorizationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="TViewAccesses" Relationship="Self.FK_TAccessibility_TRole" FromRole="TRole" ToRole="TViewAccess" />
+          <NavigationProperty Name="TUsers" Relationship="Self.FK_TUser_TRole" FromRole="TRole" ToRole="TUser" />
+        </EntityType>
+        <EntityType Name="TUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdRole" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="32" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" Nullable="false" />
+          <Property Name="UpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="TRole" Relationship="Self.FK_TUser_TRole" FromRole="TUser" ToRole="TRole" />
+        </EntityType>
+        <EntityType Name="TView">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdParent" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="GroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TViewAccesses" Relationship="Self.FK_TAccessibility_TView" FromRole="TView" ToRole="TViewAccess" />
+        </EntityType>
+        <EntityType Name="TViewAccess">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdView" Type="Int32" Nullable="false" />
+          <Property Name="IdRole" Type="Int32" Nullable="false" />
+          <Property Name="AccessRight" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TRole" Relationship="Self.FK_TAccessibility_TRole" FromRole="TViewAccess" ToRole="TRole" />
+          <NavigationProperty Name="TView" Relationship="Self.FK_TAccessibility_TView" FromRole="TViewAccess" ToRole="TView" />
+        </EntityType>
+        <Association Name="FK_TAccessibility_TRole">
+          <End Role="TRole" Type="Self.TRole" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TViewAccess" Type="Self.TViewAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TViewAccess">
+              <PropertyRef Name="IdRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TUser_TRole">
+          <End Role="TRole" Type="Self.TRole" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TUser" Type="Self.TUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TRole">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TUser">
+              <PropertyRef Name="IdRole" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TAccessibility_TView">
+          <End Role="TView" Type="Self.TView" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TViewAccess" Type="Self.TViewAccess" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TView">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TViewAccess">
+              <PropertyRef Name="IdView" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TestAuthorizationEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TRoles" EntityType="Self.TRole" />
+          <EntitySet Name="TUsers" EntityType="Self.TUser" />
+          <EntitySet Name="TViews" EntityType="Self.TView" />
+          <EntitySet Name="TViewAccesses" EntityType="Self.TViewAccess" />
+          <AssociationSet Name="FK_TAccessibility_TRole" Association="Self.FK_TAccessibility_TRole">
+            <End Role="TRole" EntitySet="TRoles" />
+            <End Role="TViewAccess" EntitySet="TViewAccesses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TUser_TRole" Association="Self.FK_TUser_TRole">
+            <End Role="TRole" EntitySet="TRoles" />
+            <End Role="TUser" EntitySet="TUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TAccessibility_TView" Association="Self.FK_TAccessibility_TView">
+            <End Role="TView" EntitySet="TViews" />
+            <End Role="TViewAccess" EntitySet="TViewAccesses" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TestAuthorizationModelStoreContainer" CdmEntityContainer="TestAuthorizationEntities">
+          <EntitySetMapping Name="TRoles">
+            <EntityTypeMapping TypeName="TestAuthorizationModel.TRole">
+              <MappingFragment StoreEntitySet="TRole">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TUsers">
+            <EntityTypeMapping TypeName="TestAuthorizationModel.TUser">
+              <MappingFragment StoreEntitySet="TUser">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdRole" ColumnName="IdRole" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TViews">
+            <EntityTypeMapping TypeName="TestAuthorizationModel.TView">
+              <MappingFragment StoreEntitySet="TView">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdParent" ColumnName="IdParent" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TViewAccesses">
+            <EntityTypeMapping TypeName="TestAuthorizationModel.TViewAccess">
+              <MappingFragment StoreEntitySet="TViewAccess">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdView" ColumnName="IdView" />
+                <ScalarProperty Name="IdRole" ColumnName="IdRole" />
+                <ScalarProperty Name="AccessRight" ColumnName="AccessRight" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

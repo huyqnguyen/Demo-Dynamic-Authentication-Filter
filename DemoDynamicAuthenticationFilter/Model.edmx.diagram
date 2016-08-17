@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="152a9869d9834219b240171fb0f01bc5" Name="Diagram1">
+        <EntityTypeShape EntityType="TestAuthorizationModel.TRole" Width="1.5" PointX="0.75" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestAuthorizationModel.TUser" Width="1.5" PointX="3" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestAuthorizationModel.TView" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TestAuthorizationModel.TViewAccess" Width="1.5" PointX="6" PointY="4.625" IsExpanded="true" />
+        <AssociationConnector Association="TestAuthorizationModel.FK_TAccessibility_TRole" ManuallyRouted="false" />
+        <AssociationConnector Association="TestAuthorizationModel.FK_TUser_TRole" ManuallyRouted="false" />
+        <AssociationConnector Association="TestAuthorizationModel.FK_TAccessibility_TView" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
